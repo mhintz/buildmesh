@@ -1,7 +1,9 @@
 VERSION := 0.1.0
 
 FILES := \
-	buildmesh.cpp
+	Vertex.cpp \
+	Mesh.cpp \
+	MeshGroup.cpp
 
 OBJ = $(addprefix obj/, $(FILES:.cpp=.o))
 
@@ -29,3 +31,4 @@ build: Makefile $(OBJ)
 	mkdir -p $(OUT_DIR)
 	libtool -static -o $(OUT_DIR)/buildmesh.lib $(OBJ)
 
+-include $(OBJ:.o=.d)
