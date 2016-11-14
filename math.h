@@ -43,4 +43,9 @@ struct Radians : public Angle {
 	float val() { return mRadians; }
 };
 
+enum class Primitive {
+	Lines = 2,
+	Triangles = 3
+};
+
 } // namespace bmesh

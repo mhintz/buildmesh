@@ -88,4 +88,10 @@ void Mesh::addBox(vec3 center, vec3 xdir, vec3 ydir, vec3 zdir) {
 	this->addSimplePlane(center + xdir - ydir - zdir, -xside, yside); // back
 }
 
+// static functions
+
+void Mesh::assignTangentFrames(std::vector<Vertex> * vertices, std::vector<uint> const & indices, Primitive primType) {
+	// TODO
+}
+
 } // namespace bmesh

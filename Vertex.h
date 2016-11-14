@@ -14,6 +14,7 @@ public:
 
 	Vertex & position(vec3 const & p) { mPosition = p; return *this; }
 	Vertex & normal(vec3 const & n) { mNormal = n; return *this; }
+	Vertex & color(vec3 const & c) { mColor = c; return *this; }
 	Vertex & tex(vec2 const & t) { mTexCoord0 = t; return *this; }
 
 	static VertexRef create() { return VertexRef(new Vertex()); }
@@ -24,6 +25,7 @@ public:
 
 	vec3 mPosition;
 	vec3 mNormal;
+	vec3 mColor;
 	vec2 mTexCoord0;
 	vec3 mTangent;
 	vec3 mBitangent;
