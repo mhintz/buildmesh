@@ -88,6 +88,50 @@ void Mesh::addBox(vec3 center, vec3 xdir, vec3 ydir, vec3 zdir) {
 	this->addSimplePlane(center + xdir - ydir - zdir, -xside, yside); // back
 }
 
+// vertAng is an angle relative to the vertical y axis (0 - π), horAng is rotation around the y axis (0 - 2π)
+vec3 getPointOnSphere(float vertAng, float horAng) {
+	return vec3(sin(vertAng) * cos(horAng), cos(vertAng), sin(vertAng) * sin(horAng));
+}
+
+void Mesh::addSphere(vec3 center, float radius, int hemiSubdivisions=24) {
+	MeshRef theMesh = std::make_shared<Mesh>(Primitive::Triangles);
+
+	float angleDelta = glm::pi<float>() / hemiSubdivisions;
+
+	// Naive implementation has lots of degenerate triangles at top and bottom
+	for (int latitude = 0; latitude <= hemiSubdivisions; latitude++) {
+		for (int longitude = 0; longitude <= 2 * hemiSubdivisions; longitude++) {
+			uint vertexNumber = theMesh->getNumVertices();
+
+			float latAngle = latitude * angleDelta;
+			float lonAngle = longitude * angleDelta;
+
+			vec3 posVector = normalize(getPointOnSphere(latAngle, lonAngle));
+			vec3 vertexPos = center + radius * posVector;
+
+			Vertex theVert = Vertex()
+				.position(vertexPos)
+				.normal(posVector)
+				.tex(vec2(lonAngle / glm::two_pi<float>(), 1.f - latAngle / glm::pi<float>()));
+
+			theMesh->addVertex(theVert);
+
+			if (latitude != 0 && longitude != 0) {
+				// upper right tri
+				theMesh->addIndex(vertexNumber);
+				theMesh->addIndex(vertexNumber - (subdivisions + 1));
+				theMesh->addIndex(vertexNumber - (subdivisions + 1) - 1);
+				// lower left tri
+				theMesh->addIndex(vertexNumber);
+				theMesh->addIndex(vertexNumber - (subdivisions + 1) - 1);
+				theMesh->addIndex(vertexNumber - 1);
+			}
+		}
+	}
+
+	return theMesh;
+}
+
 // static functions
 
 void Mesh::assignTangentFrames(std::vector<Vertex> * vertices, std::vector<uint> const & indices, Primitive primType) {

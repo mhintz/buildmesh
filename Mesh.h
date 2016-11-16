@@ -33,6 +33,7 @@ public:
 	void addSimplePlane(vec3 lowerLeft, vec3 uVector, vec3 vVector);
 	void addPlane(vec3 lowerLeft, vec3 uVector, vec3 vVector, uint subdivisions);
 	void addBox(vec3 center, vec3 xdir, vec3 ydir, vec3 zdir);
+	void addSphere(vec3 center, float radius, int hemiSubdivisions);
 
 	static MeshRef create() { return std::make_shared<Mesh>(); }
 	static MeshBox box() { return MeshBox(new Mesh()); }
