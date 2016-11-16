@@ -13,12 +13,13 @@ class MeshGroup {
 public:
 	MeshGroup();
 
-	void addMesh(Mesh const & theMesh);
+	void addMesh(MeshRef const & theMesh);
+	MeshRef createMesh(Primitive thePrim);
 
 	static MeshGroupRef create() { return MeshGroupRef(new MeshGroup()); }
 	static MeshGroupBox box() { return MeshGroupBox(new MeshGroup()); }
 
-	std::vector<Mesh> mMeshVec;
+	std::vector<MeshRef> mMeshVec;
 };
 
 } // namespace bmesh
