@@ -2,39 +2,42 @@
 
 namespace bmesh {
 
+Mesh::Mesh(Primitive primType) : mPrimitive(primType) {}
+
 void Mesh::addVertex(Vertex const & v) {
 	mVertexVec.push_back(v);
 }
 
-void Mesh::addIndex(uint i) {
-	mIndexVec.push_back(i);
+inline void Mesh::addIndexedVertex(Vertex const & v) {
+	this->addIndex(this->getNumVertices());
+	this->addVertex(v);
+}
+
+void Mesh::addLineIndexes(uint i0, uint i1) {
+	this->addIndex(i0);
+	this->addIndex(i1);
 }
 
 void Mesh::addTriangleIndexes(uint i0, uint i1, uint i2) {
-	mIndexVec.push_back(i0);
-	mIndexVec.push_back(i1);
-	mIndexVec.push_back(i2);
+	this->addIndex(i0);
+	this->addIndex(i1);
+	this->addIndex(i2);
 }
 
 void Mesh::addLine(Vertex const & v1, Vertex const & v2) {
-	mIndexVec.push_back(mVertexVec.size());
-	mVertexVec.push_back(v1);
-	mIndexVec.push_back(mVertexVec.size());
-	mVertexVec.push_back(v2);
+	addIndexedVertex(v1);
+	addIndexedVertex(v2);
 }
 
 void Mesh::addTriangle(Vertex const & v1, Vertex const & v2, Vertex const & v3) {
-	mIndexVec.push_back(mVertexVec.size());
-	mVertexVec.push_back(v1);
-	mIndexVec.push_back(mVertexVec.size());
-	mVertexVec.push_back(v2);
-	mIndexVec.push_back(mVertexVec.size());
-	mVertexVec.push_back(v3);
+	addIndexedVertex(v1);
+	addIndexedVertex(v2);
+	addIndexedVertex(v3);
 }
 
 void Mesh::addSimplePlane(vec3 lowerLeft, vec3 uVector, vec3 vVector) {
 	vec3 planeNormal = normalize(cross(uVector, vVector));
-	uint baseIndex = mVertexVec.size();
+	uint baseIndex = this->getNumVertices();
 
 	this->addVertex(Vertex().position(lowerLeft).normal(planeNormal).tex(vec2(0.0, 0.0))); // lower left
 	this->addVertex(Vertex().position(lowerLeft + uVector).normal(planeNormal).tex(vec2(1.0, 0.0))); // lower right
@@ -55,7 +58,7 @@ void Mesh::addPlane(vec3 lowerLeft, vec3 uVector, vec3 vVector, uint subdivision
 	for (uint vCnt = 0; vCnt <= subdivisions; vCnt++) {
 		float vMult = (float) vCnt;
 		for (uint uCnt = 0; uCnt <= subdivisions; uCnt++) {
-			uint vertIndex = mVertexVec.size();
+			uint vertIndex = this->getNumVertices();
 			float uMult = (float) uCnt;
 
 			Vertex theVert = Vertex()

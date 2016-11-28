@@ -2,8 +2,8 @@
 
 namespace bmesh {
 
-bmesh::MeshRef makeGraticule(vec3 center, float radius) {
-	bmesh::MeshRef theMesh = std::make_shared<bmesh::Mesh>(bmesh::Primitive::Lines);
+MeshRef makeGraticule(vec3 center, float radius) {
+	MeshRef theMesh = Mesh::create(Primitive::Lines);
 
 	int subdivisions = 24;
 	float aperturesize = glm::pi<float>() / subdivisions;
@@ -22,19 +22,16 @@ bmesh::MeshRef makeGraticule(vec3 center, float radius) {
 			color = mix(vec3(1, 0, 1), vec3(0, 1, 0), glm::smoothstep(0.0f, 0.5f, tval));
 			color = mix(color, vec3(1, 1, 0), glm::smoothstep(0.5f, 1.0f, tval));
 
-			theMesh->addVertex(bmesh::Vertex().position(vertexPos).color(color));
+			theMesh->addVertex(Vertex().position(vertexPos).color(color));
 
 			if (longitude != 0) {
 				// Connect to previous
-				theMesh->addIndex(vertexNumber);
-				theMesh->addIndex(vertexNumber - 1);
+				theMesh->addLineIndexes(vertexNumber, vertexNumber - 1);
 			}
 
 			if (latitude != 0) {
-				// Connect to above
-				theMesh->addIndex(vertexNumber);
-				// Gotta add one here, since there are (subdivisions + 1) vertices per ring
-				theMesh->addIndex(vertexNumber - (subdivisions + 1));
+				// Connect to above. Gotta add one here, since there are (subdivisions + 1) vertices per ring
+				theMesh->addLineIndexes(vertexNumber, vertexNumber - (subdivisions + 1));
 			}
 		}
 	}

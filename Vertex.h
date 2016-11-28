@@ -16,8 +16,10 @@ public:
 	Vertex & normal(vec3 const & n) { mNormal = n; return *this; }
 	Vertex & color(vec3 const & c) { mColor = c; return *this; }
 	Vertex & tex(vec2 const & t) { mTexCoord0 = t; return *this; }
+	Vertex & tangent(vec3 const & t) { mTangent = t; return *this; }
+	Vertex & bitangent(vec3 const & t) { mBitangent = t; return *this; }
 
-	static VertexRef create() { return VertexRef(new Vertex()); }
+	static VertexRef create() { return std::make_shared<Vertex>(); }
 	static VertexBox box() { return VertexBox(new Vertex()); }
 
 	static Vertex interpolate(Vertex const & v1, Vertex const & v2, float tval);
@@ -31,23 +33,22 @@ public:
 	vec3 mBitangent;
 };
 
-// Eventually, I want to get here:
+// Eventually, I want to get here, maybe?
 // class Vertex {
 // public:
 // 	Vertex() {}
 
 // 	Vertex & position(vec3 const & p) { mPosition = p; return *this; }
 // 	Vertex & normal(vec3 const & n) { mNormal = n; return *this; }
-// 	Vertex & tex(vec2 const & t) { mTexCoord0 = t; return *this; }
+// 	Vertex & color(vec4 const & c) { mColor = c; return *this; }
 // 	Vertex & tex0(vec2 const & t) { mTexCoord0 = t; return *this; }
+// 	Vertex & tangent(vec3 const & t) { mTangent = t; return *this; }
+// 	Vertex & bitangent(vec3 const & b) { mBitangent = b; return *this; }
 // 	Vertex & tex1(vec2 const & t) { mTexCoord1 = t; return *this; }
 // 	Vertex & tex2(vec2 const & t) { mTexCoord2 = t; return *this; }
 // 	Vertex & tex3(vec2 const & t) { mTexCoord3 = t; return *this; }
-// 	Vertex & color(vec4 const & c) { mColor = c; return *this; }
-// 	Vertex & tangent(vec3 const & t) { mTangent = t; return *this; }
-// 	Vertex & bitangent(vec3 const & b) { mBitangent = b; return *this; }
 
-// 	static VertexRef create() { return VertexRef(new Vertex()); }
+// 	static VertexRef create() { return std::make_shared<Vertex>(); }
 // 	static VertexBox box() { return VertexBox(new Vertex()); }
 
 // 	vec3 mPosition;
