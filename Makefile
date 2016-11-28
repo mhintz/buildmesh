@@ -3,7 +3,8 @@ VERSION := 0.1.0
 FILES := \
 	Vertex.cpp \
 	Mesh.cpp \
-	MeshGroup.cpp
+	MeshGroup.cpp \
+	MeshBuilds.cpp
 
 OBJ = $(addprefix obj/, $(FILES:.cpp=.o))
 

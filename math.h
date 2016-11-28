@@ -48,4 +48,9 @@ enum class Primitive {
 	Triangles = 3
 };
 
+// vertAng is an angle relative to the vertical y axis (0 - π), horAng is rotation around the y axis (0 - 2π)
+inline vec3 getPointOnSphere(float vertAng, float horAng) {
+	return vec3(sin(vertAng) * cos(horAng), cos(vertAng), sin(vertAng) * sin(horAng));
+}
+
 } // namespace bmesh

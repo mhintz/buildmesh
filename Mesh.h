@@ -38,8 +38,6 @@ public:
 	static MeshRef create() { return std::make_shared<Mesh>(); }
 	static MeshBox box() { return MeshBox(new Mesh()); }
 
-	static void assignTangentFrames(std::vector<Vertex> * vertices, std::vector<uint> const & indices, Primitive primType);
-
 	static size_t getIndexSize() { return sizeof(uint); }
 	static size_t getVertexSize() { return sizeof(Vertex); }
 
