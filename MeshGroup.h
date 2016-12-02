@@ -1,6 +1,6 @@
 #pragma once
 
-#include "math.h"
+#include "MathBase.h"
 #include "Mesh.h"
 
 namespace bmesh {

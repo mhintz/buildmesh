@@ -1,4 +1,3 @@
-#include "math.h"
 #include "MeshGroup.h"
 
 namespace bmesh {
