@@ -6,7 +6,7 @@ MeshRef makeGraticule(vec3 center, float radius) {
 	MeshRef theMesh = Mesh::create(Primitive::Lines);
 
 	int subdivisions = 24;
-	float aperturesize = glm::pi<float>() / subdivisions;
+	float aperturesize = glm::pi<float>() / (subdivisions + 4);
 	float vertChg = (glm::pi<float>() - 2 * aperturesize) / subdivisions;
 	float horizChg = glm::two_pi<float>() / subdivisions;
 
@@ -18,9 +18,10 @@ MeshRef makeGraticule(vec3 center, float radius) {
 			vec3 vertexPos = center + radius * posVector;
 
 			vec3 color;
-			float tval = latAngle / (subdivisions * vertChg);
-			color = mix(vec3(1, 0, 1), vec3(0, 1, 0), glm::smoothstep(0.0f, 0.5f, tval));
-			color = mix(color, vec3(1, 1, 0), glm::smoothstep(0.5f, 1.0f, tval));
+			float tval = ((vertexPos.y - center.y) / radius + 1) / 2.0;
+			color = mix(vec3(1, 0, 1), vec3(0, 1, 0), glm::smoothstep(0.0f, 0.33f, tval));
+			color = mix(color, vec3(0, 0, 1), glm::smoothstep(0.33f, 0.66f, tval));
+			color = mix(color, vec3(1, 1, 0), glm::smoothstep(0.66f, 1.0f, tval));
 
 			theMesh->addVertex(Vertex().position(vertexPos).color(color));
 
