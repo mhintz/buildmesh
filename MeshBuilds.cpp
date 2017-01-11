@@ -11,17 +11,16 @@ MeshRef makeGraticule(vec3 center, float radius) {
 	float horizChg = glm::two_pi<float>() / subdivisions;
 
 	for (int latitude = 0; latitude <= subdivisions; latitude++) {
+		float latAngle = aperturesize + latitude * vertChg;
 		for (int longitude = 0; longitude <= subdivisions; longitude++) {
 			uint vertexNumber = theMesh->getNumVertices();
-			float latAngle = aperturesize + latitude * vertChg;
 			vec3 posVector = normalize(getPointOnSphere(latAngle, longitude * horizChg));
 			vec3 vertexPos = center + radius * posVector;
 
 			vec3 color;
-			float tval = ((vertexPos.y - center.y) / radius + 1) / 2.0;
-			color = mix(vec3(1, 0, 1), vec3(0, 1, 0), glm::smoothstep(0.0f, 0.33f, tval));
-			color = mix(color, vec3(0, 0, 1), glm::smoothstep(0.33f, 0.66f, tval));
-			color = mix(color, vec3(1, 1, 0), glm::smoothstep(0.66f, 1.0f, tval));
+			float tval = latAngle / glm::pi<float>();
+			color = mix(vec3(1, 0, 1), vec3(0, 1, 0), glm::smoothstep(0.0f, 0.50f, tval));
+			color = mix(color, vec3(1, 1, 0), glm::smoothstep(0.50f, 1.0f, tval));
 
 			theMesh->addVertex(Vertex().position(vertexPos).color(color));
 
